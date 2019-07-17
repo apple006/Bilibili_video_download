@@ -220,10 +220,12 @@ def do_prepare(inputStart,inputQuality):
     for item in cid_list:
         cid = str(item['cid'])
         title = item['part']
+        print('原始标题:'+title)
         title = re.sub(r'[\/\\:*?"<>|]', '', title)  # 替换为空的
         print('[下载视频的cid]:' + cid)
-        print('[下载视频的标题]:' + title)
         page = str(item['page'])
+        title='p'+page+' '+title
+        print('[下载视频的标题]:' + title)
         start_url = start_url + "/?p=" + page
         video_list = get_play_list(start_url, cid, quality)
         start_time = time.time()
