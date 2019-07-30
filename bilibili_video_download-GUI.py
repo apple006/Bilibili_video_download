@@ -46,8 +46,9 @@ def get_play_list(start_url, cid, quality):
     html = requests.get(url_api, headers=headers).json()
     # print(json.dumps(html))
     video_list = []
-    for i in html['durl']:
-        video_list.append(i['url'])
+    if 'durl' in html.keys():
+        for i in html['durl']:
+            video_list.append(i['url'])
     # print(video_list)
     return video_list
 
