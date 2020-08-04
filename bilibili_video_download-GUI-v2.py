@@ -11,12 +11,16 @@ __author__ = 'Henry'
 20190711 - 增加GUI版本,可视化界面,操作更加友好
 '''
 
-import requests, time, hashlib, urllib.request, re, json
+import hashlib
+import time
+import urllib.request
+
 import imageio
+import requests
 
 imageio.plugins.ffmpeg.download()
 from moviepy.editor import *
-import os, sys, threading
+import os, threading
 
 from tkinter import *
 from tkinter import ttk
@@ -177,6 +181,7 @@ def combine_video(video_list, title):
         # 视频只有一段则直接打印下载完成
         print('[视频合并完成]:' + title)
 
+
 # 准备视频选集
 def do_prepare(inputStart, inputQuality):
     # 清空进度条
@@ -189,6 +194,7 @@ def do_prepare(inputStart, inputQuality):
     # 用户输入av号或者视频链接地址
     print('*' * 30 + 'B站视频下载小助手' + '*' * 30)
     start = inputStart
+    # 根据B站集数下载接口获取视频选集列表；通过正则表达式截取BV号
     start_url = 'https://api.bilibili.com/x/player/pagelist?jsonp=jsonp&bvid=' + re.search("BV([a-zA-Z0-9]+){10}", start).group()
 
     # 视频质量
@@ -201,7 +207,7 @@ def do_prepare(inputStart, inputQuality):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
     }
     html = requests.get(start_url, headers=headers).json()
-    # 获取选集列表
+    # 获取视频选集列表
     data = html['data']
     cid_list = []
     if '?p=' in start:
@@ -260,6 +266,7 @@ def thread_it(func, *args):
     t.start()
 
 
+# 主函数；本脚本入口
 if __name__ == "__main__":
     # 设置标题
     root.title('B站视频下载小助手-GUI')
